@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<ConnectionData>
+	<Database name="clinica">
+		<User>root</User>
+		<Password>admin</Password>
+		<Driver>com.mysql.cj.jdbc.Driver</Driver>
+		<Server>jdbc:mysql://localhost/</Server>
+	</Database>
+</ConnectionData>

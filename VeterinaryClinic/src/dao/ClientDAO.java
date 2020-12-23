@@ -57,14 +57,13 @@ public class ClientDAO {
 			stmt.setString(6, client.getCity());
 			//execute update
 			rows = stmt.executeUpdate();
-			//rows= stmt.executeUpdate(query);
-			ResultSet rs = stmt.getGeneratedKeys();
-			if (rs.next()){
-			    int id =rs.getInt(1);
-			    System.out.println("id es: "+id);
-			}
+			
 			if(rows == 1) {
-				inserted = true;
+				ResultSet rs = stmt.getGeneratedKeys();
+				if (rs.next()){
+				    int id =rs.getInt(1);
+				    System.out.println("id es: "+id);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace(System.out);
