@@ -6,6 +6,7 @@ public class Patient {
 	private String name;
 	private double weight;
 	private int age;
+	private String type;
 	private String breed;
 	public Patient() {
 		
@@ -45,6 +46,13 @@ public class Patient {
 	}
 	public void setBreed(String breed) {
 		this.breed = breed;
+	}
+	
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
 	}
 	@Override
 	public String toString() {

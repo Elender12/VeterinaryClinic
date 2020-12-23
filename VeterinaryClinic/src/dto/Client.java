@@ -12,6 +12,16 @@ public class Client {
 	public Client() {
 		
 	}
+	
+	public Client(String name, String surname, String address, String phone, int zipcode, String city) {
+		this.name = name;
+		this.surname = surname;
+		this.address = address;
+		this.phone = phone;
+		this.zipcode = zipcode;
+		this.city = city;
+	}
+
 	public int getId() {
 		return id;
 	}
