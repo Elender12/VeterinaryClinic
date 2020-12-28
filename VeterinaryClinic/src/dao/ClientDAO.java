@@ -8,15 +8,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import dto.Client;
 
-
 public class ClientDAO {
 	ConnectionDAO conn;
-	
+
 	public ClientDAO() {
 		conn = new ConnectionDAO();
 	}
 
-	public ArrayList<Client> clientsList(){
+	public ArrayList<Client> clientsList() {
 		Connection connection = conn.getConexion();
 		ArrayList<Client> clients = new ArrayList<Client>();
 		Client client;
@@ -26,13 +25,13 @@ public class ClientDAO {
 		try {
 			stmt = connection.createStatement();
 			rs = stmt.executeQuery(query);
-			while(rs.next()) {
+			while (rs.next()) {
 				client = new Client();
 				client.setId(rs.getInt(1));
 				client.setName(rs.getString(2));
 				clients.add(client);
 			}
-		}catch(SQLException sql) {
+		} catch (SQLException sql) {
 			sql.printStackTrace(System.out);
 		} finally {
 			conn.close(stmt);
@@ -41,43 +40,87 @@ public class ClientDAO {
 		}
 		return clients;
 	}
-	public boolean insertClient(Client client) {
+
+	public int insertClient(Client client) {
 		Connection connection = conn.getConexion();
-		PreparedStatement	stmt = null;
-		String query = "INSERT INTO clients (name, surname, address, phone, zipcode, city) VALUES (?,?,?,?,?,?)";
+		PreparedStatement stmt = null;
+		String query = "INSERT INTO clients (id_document, name, surname, address, phone, zipcode, city) VALUES (?,?,?,?,?,?,?)";
 		int rows = 0;
-		boolean inserted = false;
+		int inserted = -1;
 		try {
 			stmt = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-			stmt.setString(1, client.getName());
-			stmt.setString(2, client.getSurname());
-			stmt.setString(3, client.getAddress());
-			stmt.setString(4, client.getPhone());
-			stmt.setInt(5, client.getZipcode());
-			stmt.setString(6, client.getCity());
-			//execute update
+			stmt.setString(1, client.getDocumentID());
+			stmt.setString(2, client.getName());
+			stmt.setString(3, client.getSurname());
+			stmt.setString(4, client.getAddress());
+			stmt.setString(5, client.getPhone());
+			stmt.setInt(6, client.getZipcode());
+			stmt.setString(7, client.getCity());
+			// execute update
 			rows = stmt.executeUpdate();
-			
-			if(rows == 1) {
+
+			if (rows == 1) {
 				ResultSet rs = stmt.getGeneratedKeys();
-				if (rs.next()){
-				    int id =rs.getInt(1);
-				    System.out.println("id es: "+id);
+				if (rs.next()) {
+					inserted = rs.getInt(1);
 				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace(System.out);
-			inserted = false;
-		}finally {
+			inserted = -1;
+		} finally {
 			conn.close(stmt);
 			conn.close(connection);
 		}
 		return inserted;
 	}
-	public boolean insertPet(Client client) {
-		boolean inserted = false;
-		
-		return inserted;
-		
+
+	public boolean deleteClient(String documentID) {
+		Connection connection = conn.getConexion();
+		PreparedStatement stmt = null;
+		int rows = 0;
+		boolean deleted = false;
+		try {
+			stmt = connection.prepareStatement("DELETE * FROM `clinica`.`clients` WHERE (`id_document` = ?)");
+			stmt.setString(1, documentID);
+			rows = stmt.executeUpdate();
+			if (rows == 1) {
+				deleted = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace(System.out);
+			deleted = false;
+		} finally {
+			conn.close(stmt);
+			conn.close(connection);
+		}
+		return deleted;
+	}
+
+	public int checkClient(String documentID) {
+		Connection connection = conn.getConexion();
+		PreparedStatement stmt = null;
+		int rows = 0;
+		int clientID = -1;
+		ResultSet rs = null;
+		try {
+			stmt = connection.prepareStatement("Select * FROM `clinica`.`clients` WHERE (`id_document` = ?)");
+			stmt.setString(1, documentID);
+			rs = stmt.executeQuery();
+			if (rows == 1) {
+				while (rs.next()) {
+					clientID = rs.getInt(1);
+				}
+			}
+		} catch (SQLException e) {
+			clientID = -1;
+			e.printStackTrace(System.out);
+		} finally {
+			conn.close(stmt);
+			conn.close(rs);
+			conn.close(connection);
+		}
+		return clientID;
+
 	}
 }

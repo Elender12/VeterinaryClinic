@@ -4,7 +4,7 @@ public class Patient {
 	private int id;
 	private int ownerId;
 	private String name;
-	private double weight;
+	private float weight;
 	private int age;
 	private String type;
 	private String breed;
@@ -29,10 +29,10 @@ public class Patient {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public double getWeight() {
+	public float getWeight() {
 		return weight;
 	}
-	public void setWeight(double weight) {
+	public void setWeight(float weight) {
 		this.weight = weight;
 	}
 	public int getAge() {

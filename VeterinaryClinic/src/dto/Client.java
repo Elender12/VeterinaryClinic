@@ -3,6 +3,7 @@ package dto;
 public class Client {
 	//attributes
 	private int id;
+	private String documentID;
 	private String name;
 	private String surname;
 	private String address;
@@ -13,7 +14,8 @@ public class Client {
 		
 	}
 	
-	public Client(String name, String surname, String address, String phone, int zipcode, String city) {
+	public Client(String name, String documentID,String surname, String address, String phone, int zipcode, String city) {
+		this.documentID= documentID;
 		this.name = name;
 		this.surname = surname;
 		this.address = address;
@@ -64,6 +66,15 @@ public class Client {
 	public void setCity(String city) {
 		this.city = city;
 	}
+	
+	public String getDocumentID() {
+		return documentID;
+	}
+
+	public void setDocumentID(String documentID) {
+		this.documentID = documentID;
+	}
+
 	@Override
 	public String toString() {
 		return "Client [id=" + id + ", name=" + name + ", surname=" + surname + ", address=" + address + ", phone="
