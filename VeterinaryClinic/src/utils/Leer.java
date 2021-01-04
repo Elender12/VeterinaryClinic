@@ -24,6 +24,10 @@ public class Leer {
 				dato="";
 				mostrarEnPantalla(texto);
 				dato = dataIn.readLine();
+				while(dato.equals("")) {
+					mostrarEnPantalla("Vuelve a introducir el dato, por favor: ");
+					dato = dataIn.readLine();
+				}
 				error=false;
 			} catch (IOException e) {
 				mostrarEnPantalla("Vuelve a introducir el dato, por favor: ");

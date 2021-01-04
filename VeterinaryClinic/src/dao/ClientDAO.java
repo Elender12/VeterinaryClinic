@@ -81,7 +81,7 @@ public class ClientDAO {
 		int rows = 0;
 		boolean deleted = false;
 		try {
-			stmt = connection.prepareStatement("DELETE * FROM `clinica`.`clients` WHERE (`id_document` = ?)");
+			stmt = connection.prepareStatement("DELETE FROM `clinica`.`clients` WHERE (`id_document` = ?)");
 			stmt.setString(1, documentID);
 			rows = stmt.executeUpdate();
 			if (rows == 1) {
@@ -97,30 +97,60 @@ public class ClientDAO {
 		return deleted;
 	}
 
-	public int checkClient(String documentID) {
+	public Client checkClient(String documentID) {
 		Connection connection = conn.getConexion();
 		PreparedStatement stmt = null;
-		int rows = 0;
-		int clientID = -1;
 		ResultSet rs = null;
+		Client client = null;
 		try {
 			stmt = connection.prepareStatement("Select * FROM `clinica`.`clients` WHERE (`id_document` = ?)");
 			stmt.setString(1, documentID);
 			rs = stmt.executeQuery();
-			if (rows == 1) {
-				while (rs.next()) {
-					clientID = rs.getInt(1);
+			if (rs != null) {
+				while (rs.next()) { 
+					client = new Client();
+					client.setId(rs.getInt(1));
+					client.setDocumentID(rs.getString(2));
+					client.setAddress(rs.getString(5));
+					client.setPhone(rs.getString(6));
+					client.setZipcode(rs.getInt(7));
+					client.setCity(rs.getString(8));
 				}
 			}
 		} catch (SQLException e) {
-			clientID = -1;
+			
 			e.printStackTrace(System.out);
 		} finally {
 			conn.close(stmt);
 			conn.close(rs);
 			conn.close(connection);
 		}
-		return clientID;
+		return client;
 
+	}
+	public boolean editClient(Client client) {
+		Connection connection = conn.getConexion();
+		PreparedStatement stmt = null;
+		int rows = 0;
+		boolean updated = false;
+		try {
+			stmt = connection.prepareStatement("UPDATE `clinica`.`clients` SET `address` = ?, `phone` = ?, `zipcode` = ?, `city` = ? WHERE (`id` = ?)");
+			stmt.setString(1, client.getAddress());
+			stmt.setString(2, client.getPhone());
+			stmt.setInt(3, client.getZipcode() );
+			stmt.setString(4, client.getCity());
+			stmt.setInt(5, client.getId());
+			rows = stmt.executeUpdate();
+			if (rows == 1) {
+				updated = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace(System.out);
+			updated = false;
+		} finally {
+			conn.close(stmt);
+			conn.close(connection);
+		}
+		return updated;
 	}
 }

@@ -68,22 +68,26 @@ public class PatientDAO {
 		
 	}
 	
+	
+	
 	public ArrayList<Patient> getAllPatients(int ownerID){
-		ArrayList<Patient> pets = new ArrayList<Patient>();
+		ArrayList<Patient> pets = null;
 		Connection connection = conn.getConexion();
 		PreparedStatement stmt = null;
-		ResultSet rs = null;
-		int rows = 0;
-	
+		ResultSet rs = null;;
 		try {
 			stmt = connection.prepareStatement(
-						"SELECT id, name FROM `clinica`.`patients` WHERE (`owner_id` = ?)");
+						"SELECT * FROM `clinica`.`patients` WHERE (`owner_id` = ?)");
 			stmt.setInt(1, ownerID);
 			rs = stmt.executeQuery();
+			pets = new ArrayList<Patient>();
 			while (rs.next()) {
 				Patient patient = new Patient();
 				patient.setId(rs.getInt(1));
-				patient.setName(rs.getString(2));
+				patient.setOwnerId(rs.getInt(2));
+				patient.setName(rs.getString(3));
+				patient.setWeight(rs.getFloat(4));
+				patient.setAge(rs.getInt(5));
 				pets.add(patient);
 			}
 		} catch (SQLException e) {
@@ -94,8 +98,40 @@ public class PatientDAO {
 			conn.close(rs);
 			conn.close(connection);
 		}
-		
 		return pets;
 		
 	}
+	
+	public Patient getPatient() {
+		
+		
+		
+		return null;
+	}
+	
+	public boolean updatePatient(Patient patient) {
+		boolean updated = false;
+		Connection connection = conn.getConexion();
+		PreparedStatement stmt = null;
+		int rows = 0;
+		try {
+			stmt = connection.prepareStatement(
+						"UPDATE `clinica`.`patients` SET `weight` = ?, `age` = ? WHERE (`id` = ?)");
+			stmt.setFloat(1, patient.getWeight());
+			stmt.setInt(2, patient.getAge());
+			stmt.setInt(3, patient.getId());
+			rows = stmt.executeUpdate();
+			if(rows == 1 ) {
+				updated = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace(System.out);
+			updated = false;
+		}finally {
+			conn.close(stmt);
+			conn.close(connection);
+		}
+		return updated;
+	}
+	
 }
