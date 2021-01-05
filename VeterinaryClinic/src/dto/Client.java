@@ -10,6 +10,7 @@ public class Client {
 	private String phone;
 	private int zipcode;
 	private String city;
+	
 	public Client() {
 		
 	}

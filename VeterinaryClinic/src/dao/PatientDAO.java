@@ -15,7 +15,11 @@ public class PatientDAO {
 	public PatientDAO() {
 		conn = new ConnectionDAO();
 	}
-	
+	/**
+	 * 
+	 * @param patient
+	 * @return resultado de la operacion
+	 */
 	public boolean  insertPatient(Patient patient) {
 		Connection connection = conn.getConexion();
 		PreparedStatement	stmt = null;
@@ -30,7 +34,7 @@ public class PatientDAO {
 			stmt.setInt(4, patient.getAge());
 			stmt.setString(5, patient.getType());
 			stmt.setString(6, patient.getBreed());
-			//execute update
+	
 			rows = stmt.executeUpdate();
 			if(rows == 1) {
 			inserted = true;
@@ -44,6 +48,11 @@ public class PatientDAO {
 		}
 		return inserted;
 	}
+	/**
+	 * 
+	 * @param petID
+	 * @return resultado de la operacion
+	 */
 	public boolean deletePatient(int petID) {
 		Connection connection = conn.getConexion();
 		PreparedStatement stmt = null;
@@ -67,9 +76,42 @@ public class PatientDAO {
 		return deleted;
 		
 	}
+
+	/**
+	 * 
+	 * @param patient
+	 * @return resultado de la operacion
+	 */
+	public boolean updatePatient(Patient patient) {
+		boolean updated = false;
+		Connection connection = conn.getConexion();
+		PreparedStatement stmt = null;
+		int rows = 0;
+		try {
+			stmt = connection.prepareStatement(
+						"UPDATE `clinica`.`patients` SET `weight` = ?, `age` = ? WHERE (`id` = ?)");
+			stmt.setFloat(1, patient.getWeight());
+			stmt.setInt(2, patient.getAge());
+			stmt.setInt(3, patient.getId());
+			rows = stmt.executeUpdate();
+			if(rows == 1 ) {
+				updated = true;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace(System.out);
+			updated = false;
+		}finally {
+			conn.close(stmt);
+			conn.close(connection);
+		}
+		return updated;
+	}
 	
-	
-	
+	/**
+	 * 
+	 * @param ownerID
+	 * @return lista con todos las mascotas
+	 */
 	public ArrayList<Patient> getAllPatients(int ownerID){
 		ArrayList<Patient> pets = null;
 		Connection connection = conn.getConexion();
@@ -100,38 +142,6 @@ public class PatientDAO {
 		}
 		return pets;
 		
-	}
-	
-	public Patient getPatient() {
-		
-		
-		
-		return null;
-	}
-	
-	public boolean updatePatient(Patient patient) {
-		boolean updated = false;
-		Connection connection = conn.getConexion();
-		PreparedStatement stmt = null;
-		int rows = 0;
-		try {
-			stmt = connection.prepareStatement(
-						"UPDATE `clinica`.`patients` SET `weight` = ?, `age` = ? WHERE (`id` = ?)");
-			stmt.setFloat(1, patient.getWeight());
-			stmt.setInt(2, patient.getAge());
-			stmt.setInt(3, patient.getId());
-			rows = stmt.executeUpdate();
-			if(rows == 1 ) {
-				updated = true;
-			}
-		} catch (SQLException e) {
-			e.printStackTrace(System.out);
-			updated = false;
-		}finally {
-			conn.close(stmt);
-			conn.close(connection);
-		}
-		return updated;
 	}
 	
 }

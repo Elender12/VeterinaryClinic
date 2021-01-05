@@ -26,7 +26,6 @@ public class ConnectionProperties {
 	public void readConnectionData() {
 
 		try {
-
 			File file = new File(FILE_NAME);
 			DocumentBuilder dBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 			Document doc = dBuilder.parse(file);

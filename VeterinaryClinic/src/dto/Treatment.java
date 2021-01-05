@@ -1,13 +1,26 @@
 package dto;
 
+import java.sql.Date;
+
 public class Treatment {
 	private int id;
 	private String description;
 	private double price;
 	private boolean isVaccine;
+	private Date treatmentDate;
+	
 	public Treatment() {
 		
 	}
+	
+	public Date getTreatmentDate() {
+		return treatmentDate;
+	}
+
+	public void setTreatmentDate(Date treatmentDate) {
+		this.treatmentDate = treatmentDate;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -32,10 +45,12 @@ public class Treatment {
 	public void setVaccine(boolean isVaccine) {
 		this.isVaccine = isVaccine;
 	}
+
 	@Override
 	public String toString() {
-		return "Treatment [id=" + id + ", description=" + description + ", price=" + price + ", isVaccine=" + isVaccine
-				+ "]";
+		return  description + ", price " + price
+				+ "€ on " + treatmentDate+ " vaccine: "+isVaccine;
 	}
+
 	
 }

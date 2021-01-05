@@ -41,6 +41,11 @@ public class ClientDAO {
 		return clients;
 	}
 
+	/**
+	 * 
+	 * @param client
+	 * @return resultado de la operacion
+	 */
 	public int insertClient(Client client) {
 		Connection connection = conn.getConexion();
 		PreparedStatement stmt = null;
@@ -66,7 +71,7 @@ public class ClientDAO {
 				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace(System.out);
+			//e.printStackTrace(System.out);
 			inserted = -1;
 		} finally {
 			conn.close(stmt);
@@ -75,6 +80,11 @@ public class ClientDAO {
 		return inserted;
 	}
 
+	/**
+	 * 
+	 * @param documentID
+	 * @return resultado de la operacion
+	 */
 	public boolean deleteClient(String documentID) {
 		Connection connection = conn.getConexion();
 		PreparedStatement stmt = null;
@@ -97,6 +107,11 @@ public class ClientDAO {
 		return deleted;
 	}
 
+	/**
+	 * 
+	 * @param documentID
+	 * @return Cliente recuperado de la base de datos
+	 */
 	public Client checkClient(String documentID) {
 		Connection connection = conn.getConexion();
 		PreparedStatement stmt = null;
@@ -128,6 +143,12 @@ public class ClientDAO {
 		return client;
 
 	}
+	
+	/**
+	 * 
+	 * @param client
+	 * @return resultado de la operacion
+	 */
 	public boolean editClient(Client client) {
 		Connection connection = conn.getConexion();
 		PreparedStatement stmt = null;

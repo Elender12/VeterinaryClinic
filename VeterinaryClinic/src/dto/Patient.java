@@ -1,5 +1,7 @@
 package dto;
 
+import java.util.ArrayList;
+
 public class Patient {
 	private int id;
 	private int ownerId;
@@ -8,6 +10,7 @@ public class Patient {
 	private int age;
 	private String type;
 	private String breed;
+	private ArrayList<Treatment> treatments;
 	public Patient() {
 		
 	}
@@ -53,6 +56,14 @@ public class Patient {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	
+	public ArrayList<Treatment> getTreatments() {
+		return treatments;
+	}
+	public void setTreatments(ArrayList<Treatment> treatments) {
+		this.treatments = treatments;
 	}
 	@Override
 	public String toString() {
