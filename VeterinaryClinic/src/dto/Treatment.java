@@ -48,8 +48,14 @@ public class Treatment {
 
 	@Override
 	public String toString() {
-		return  description + ", price " + price
-				+ "€ on " + treatmentDate+ " vaccine: "+isVaccine;
+		if(isVaccine) {
+			return  description + ", price " + price
+					+ "€ on " + treatmentDate+ " and it was a vaccine";
+		}else {
+			return  description + ", price " + price
+					+ "€ on " + treatmentDate;
+		}
+
 	}
 
 	

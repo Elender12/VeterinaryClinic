@@ -20,6 +20,7 @@ public class ClinicManagement {
 	final static int DELETE = 3;
 	final static int EDIT = 2;
 	final static int REGISTER = 1;
+	final static int LIST = 4;
 	final static int FIRST_QUERY= 1;
 	final static int SECOND_QUERY = 2;
 	final static int MANAGE_CLIENT_OPTION = 1;
@@ -73,12 +74,12 @@ public class ClinicManagement {
 				break;
 			case MANAGE_PET_OPTION:
 				documentID = Leer.pedirCadena("Insert client\'s document id: ");
-				client = new Client();
+				client = null;
 				client = clientDAO.checkClient(documentID);
 				if (client != null) {
 					int petOption = 0;
 					petOption = Leer.pedirEntero("Press " + REGISTER + " to register a pet, " + EDIT
-							+ " to edit a pet or " + DELETE + " to delete one.");
+							+ " to edit a pet or " + DELETE + " to delete one or "+LIST+ " to list all pets.");
 					switch (petOption) {
 					case REGISTER:
 						Patient newPatient = getPatientData(REGISTER, client.getId(), null);
@@ -122,6 +123,10 @@ public class ClinicManagement {
 							System.out.println("There are no pets for this client.");
 						}
 						break;
+					case LIST:
+						pets = new ArrayList<Patient>();
+						pets = showAllPets(client, patientDAO);
+						break;
 					default:
 						break;
 					}
@@ -131,14 +136,12 @@ public class ClinicManagement {
 				break;
 
 			case CONSULT_TREATMENT_INFO:
-				
-				
+
 					Map<String, Treatment> list = new TreeMap<String, Treatment>();
 					documentID = Leer.pedirCadena("Insert client\'s document id: ");
 					client = new Client();
 					client = clientDAO.checkClient(documentID);
 					if(client != null) {
-						
 						int queryNumber = Leer.pedirEntero("Press " + FIRST_QUERY + " to see date and price for the last treatment applied to a client\'s pet and " + SECOND_QUERY
 								+ " to see all treatments that all pets had.");
 						switch (queryNumber) {
@@ -151,14 +154,17 @@ public class ClinicManagement {
 							}else {
 								System.out.println("This client has no treated pets.");
 							}
-							
 							break;
 						case SECOND_QUERY:
 							Map<String, ArrayList<Treatment>> vaccines = new TreeMap<String, ArrayList<Treatment>>();
 							vaccines = treatmentDAO.getPetTreatments(client.getDocumentID());
 							if(vaccines.size() > 0) {
 								for(String key: vaccines.keySet()) {
-									System.out.println(key+ " "+vaccines.get(key));
+									//System.out.println(key+ " had "+vaccines.get(key));
+									System.out.println(key+ " had: ");
+									for (int i = 0; i < vaccines.get(key).size(); i++) {
+										System.out.println(i+1+". "+vaccines.get(key).get(i));
+									}
 								}
 							}else {
 								System.out.println("This client has no treated pets.");
@@ -176,7 +182,7 @@ public class ClinicManagement {
 	
 				
 			default:
-				Leer.mostrarEnPantalla("Please insert a valid option.");
+				Leer.mostrarEnPantalla("Invalid option! \n");
 				break;
 			}
 			opcion = Leer.pedirEntero("Please choose another option: ");
@@ -196,7 +202,7 @@ public class ClinicManagement {
 		ArrayList<Patient> pets = patientDAO.getAllPatients(client.getId());
 		if (pets != null) {
 			for (int i = 0; i < pets.size(); i++) {
-				Leer.mostrarEnPantalla((i + 1) + " " + pets.get(i).getName());
+				Leer.mostrarEnPantalla((i + 1) + " " + pets.get(i).getName()+ " age "+pets.get(i).getAge()+ " weight "+pets.get(i).getWeight());
 			}
 			return pets;
 		}

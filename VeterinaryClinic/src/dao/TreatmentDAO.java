@@ -65,7 +65,7 @@ public class TreatmentDAO {
 		ResultSet rs = null;;
 		try {
 			stmt = connection.prepareStatement(
-						"select p.name, t.description, t.isVaccine, treatment_date from applied_treatments as ts inner join patients as p on ts.id_patient = p.id inner join clients as c on c.id= p.owner_id inner join treatments as t on ts.id_treatment= t.id where c.id_document = ?");
+						"select p.name, t.description, t.isVaccine, treatment_date, t.price from applied_treatments as ts inner join patients as p on ts.id_patient = p.id inner join clients as c on c.id= p.owner_id inner join treatments as t on ts.id_treatment= t.id where c.id_document = ?");
 			stmt.setString(1, ownerID);
 			rs = stmt.executeQuery();
 			while (rs.next()) {
@@ -75,6 +75,7 @@ public class TreatmentDAO {
 				treatment.setDescription(rs.getString(2));
 				treatment.setVaccine(rs.getBoolean(3));
 				treatment.setTreatmentDate(rs.getDate(4));
+				treatment.setPrice(rs.getDouble(5));
 				if(vaccinesList.containsKey(rs.getString(1))) {
 					vaccinesList.get(rs.getString(1)).add(treatment);
 				}else {
